@@ -12,12 +12,14 @@ class FormCubit extends Cubit<FormState> {
   void submitForm(String name, String email) {
     String? nameError;
     if (name.isEmpty) {
-      nameError = "Name cannot be empty";
+      nameError = "Nama tidak boleh kosong";
     }
     
     String? emailError;
     if (email.isEmpty) {
-      emailError = "Email cannot be empty";
+      emailError = "Email tidak boleh kosong";
+    } else if (!isValidEmail(email)) {
+      emailError = "Email harus valid";
     }
     
     if (nameError != null || emailError != null) {
@@ -25,6 +27,11 @@ class FormCubit extends Cubit<FormState> {
     } else {
       emit(FormSubmitted(FormData(name: name, email: email)));
     }
+  }
+
+   bool isValidEmail(String email) {
+    final emailRegExp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    return emailRegExp.hasMatch(email);
   }
   
  
